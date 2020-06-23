@@ -24,5 +24,13 @@ class ProductPage(BasePage):
             print("No second alert presented")
 
     def product_should_be_added(self):
-        item_added = self.browser.find_element(*ProductPageLocators.ITEM_ADDED)
-        assert 'has been added to your basket' in item_added.text, 'Item has not been added to the basket'
+        item_added = self.browser.find_element(*ProductPageLocators.ITEM_ADDED).text
+        title = self.browser.find_element(*ProductPageLocators.TITLE).text
+        message = title + ' has been added to your basket.'
+        assert message == item_added, 'Item has not been added to the basket or message is incorrect'
+
+    def price_updated(self):
+        price = self.browser.find_element(*ProductPageLocators.PRICE).text
+        price_in_basket = self.browser.find_element(*ProductPageLocators.BASKET_PRICE).text
+        message = 'Your basket total is now ' + price
+        assert message == price_in_basket, 'Price was not updated or message is incorrect'
